@@ -1,0 +1,35 @@
+body {
+  background-color: #f9fafb; /* Soft light gray */
+  color: #111827; /* Near black text */
+  margin: 0;
+  padding: 0;
+}
+
+/* Add a subtle fade-in for the whole site */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom Scrollbar for the horizontal promo menu */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+:root {
+  --brand-gold: #CFA969;
+  --card-bg: #141414;
+  --text-dim: #a0a0a0;
+}
+
+body {
+  background-color: var(--dark-bg);
+  color: var(--text-bright);
+}
