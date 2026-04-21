@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Trash2, Heart, ChevronLeft, Star } from "lucide-react";
 import { deleteWishlist, getWishlist } from "../api/callApi";
+import { UPLOADS_BASE_URL } from "../api/AxiosApi";
 import { useAuth } from "../hooks/useAuth";
 import { useWishlist } from "../context/WishlistContext";
 import { useCart } from "../context/CartContext";
@@ -103,7 +104,7 @@ export default function WishList() {
               >
                 <div className="w-full sm:w-32 h-32 bg-slate-100 rounded-xl overflow-hidden flex-shrink-0">
                   <img
-                    src={`http://localhost:2425/uploads/${item?.product.image}`}
+                    src={`${UPLOADS_BASE_URL}/${item?.product.image}`}
                     alt={item?.product.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />

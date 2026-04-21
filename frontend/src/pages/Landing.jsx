@@ -1,5 +1,5 @@
 import React from 'react'
-import '../app.css';
+import '../App.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Cards from '../components/Cards';
@@ -9,7 +9,7 @@ import ShowingAllProducts from './ShowingAllProducts';
 import RecentProducts from './RecentProducts'
 import Hero from '../components/Hero';
 import SaleSec from '../components/SaleSec';
-import SaleSecTwo from '../components/SaleSEcTwo';
+import SaleSecTwo from '../components/SaleSecTwo';
 import SectionLanding from '../components/SectionLanding';
 import SubTopTrendsPage from '../components/SubTopTrendsPage';
 import InteractiveSpotlight from '../components/InteractiveSpotlight';

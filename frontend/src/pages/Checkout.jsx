@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { createOrder, viewCart, createPayment, verifyPayment } from '../api/callApi';
+import { UPLOADS_BASE_URL } from '../api/AxiosApi';
 import { useAuth } from '../hooks/useAuth';
 
 const initialForm = {
@@ -335,7 +336,7 @@ useEffect(() => {
                 cartItems.map((item) => (
                   <div key={item._id} className="flex items-center gap-4">
                     <img
-                      src={`http://localhost:2425/uploads/${item.productId?.image}`}
+                      src={`${UPLOADS_BASE_URL}/${item.productId?.image}`}
                       alt={item.productId?.name}
                       className="w-16 h-20 rounded-2xl bg-white/10 object-cover"
                     />

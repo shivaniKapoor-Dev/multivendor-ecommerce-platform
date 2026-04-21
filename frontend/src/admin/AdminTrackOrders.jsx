@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAdminOrders, updateOrderStatus } from '../api/callApi';
+import { UPLOADS_BASE_URL } from '../api/AxiosApi';
 
 export default function AdminTrackOrders() {
   const [orders, setOrders] = useState([]);
@@ -68,7 +69,7 @@ export default function AdminTrackOrders() {
                     {order.items.map((item, index) => (
                       <div key={`${order._id}-${index}`} className="flex items-center gap-4 border rounded-xl p-4">
                         <img
-                          src={`http://localhost:2425/uploads/${item.productId?.image}`}
+                          src={`${UPLOADS_BASE_URL}/${item.productId?.image}`}
                           alt={item.productId?.name}
                           className="w-14 h-16 rounded-lg object-cover bg-gray-50"
                         />

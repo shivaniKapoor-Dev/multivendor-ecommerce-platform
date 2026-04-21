@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import RelatedProducts from './RelatedProducts';
 import RecentProducts from './RecentProducts';
 import { addProductReview, getOrders, getProduct, trackProductVisit } from '../api/callApi';
+import { UPLOADS_BASE_URL } from '../api/AxiosApi';
 import { Heart, Share2, Star, ChevronRight, ShieldCheck, Truck, RefreshCcw } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
@@ -215,7 +216,7 @@ export default function ProductDetails() {
                 <img
                   src={
                     product.image
-                      ? `http://localhost:2425/uploads/${product.image}`
+                      ? `${UPLOADS_BASE_URL}/${product.image}`
                       : "/no-image.png"
                   }
                   alt={product.name}

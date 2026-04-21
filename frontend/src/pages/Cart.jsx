@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
 import Footer from '../components/Footer';
 import { quantityCart, viewCart } from '../api/callApi';
+import { UPLOADS_BASE_URL } from '../api/AxiosApi';
 import { useCart } from '../context/CartContext';
 import { useAuth } from "../hooks/useAuth";
 
@@ -136,7 +137,7 @@ export default function Cart() {
                                 >
                                     <div className="w-32 h-40 bg-white rounded-2xl border border-gray-100 flex items-center justify-center p-4 shadow-sm shrink-0">
                                         <img
-                                            src={`http://localhost:2425/uploads/${item.productId?.image}`}
+                                            src={`${UPLOADS_BASE_URL}/${item.productId?.image}`}
                                             alt={item.productId?.name}
                                             className="max-h-full object-contain"
                                         />

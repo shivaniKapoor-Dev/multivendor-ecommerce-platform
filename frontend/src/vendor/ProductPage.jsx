@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { deleteProducts, productPage, updateProduct } from "../api/callApi";
 import { Edit, Trash2, Plus, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { UPLOADS_BASE_URL } from "../api/AxiosApi";
 
 export default function ProductPage() {
   const navigate = useNavigate();
@@ -150,7 +151,7 @@ export default function ProductPage() {
           {products.map(product => (
             <div key={product._id} className="bg-white p-4 rounded-xl shadow">
               <img
-                src={`http://localhost:2425/uploads/${product.image}`}
+                src={`${UPLOADS_BASE_URL}/${product.image}`}
                 className="h-48 w-full object-contain mb-4"
                 
               />

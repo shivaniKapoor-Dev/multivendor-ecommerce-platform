@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAdminProducts, updateProductBlock } from "../api/callApi";
+import { UPLOADS_BASE_URL } from "../api/AxiosApi";
 
 export default function ProductsApproval() {
   const [products, setProducts] = useState([]);
@@ -44,7 +45,7 @@ export default function ProductsApproval() {
         {products.map((product) => (
           <div key={product._id} className="bg-white rounded-2xl border p-4 shadow-sm">
             <img
-              src={`http://localhost:2425/uploads/${product.image}`}
+              src={`${UPLOADS_BASE_URL}/${product.image}`}
               alt={product.name}
               className="h-44 w-full object-contain mb-4 rounded-xl bg-gray-50"
             />
