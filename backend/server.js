@@ -9,10 +9,7 @@ dotenv.config();
 
 const allowedOrigins = new Set([
     "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:5174",
-    "http://127.0.0.1:5174",
-    ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
+    "https://multivendor-ecommerce-platform.vercel.app",
 ]);
 
 app.use(cors({
