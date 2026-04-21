@@ -10,7 +10,13 @@ dotenv.config();
 const allowedOrigins = new Set([
     "http://localhost:5173",
     "https://multivendor-ecommerce-platform.vercel.app",
+    "https://multivendor-ecommerce-platform.onrender.com",
 ]);
+
+const allowedOriginPatterns = [
+    /^https:\/\/multivendor-ecommerce-platform(?:-[a-z0-9-]+)?\.vercel\.app$/,
+    /^https:\/\/multivendor-ecommerce-pl(?:-[a-z0-9-]+)?\.vercel\.app$/,
+];
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -19,6 +25,10 @@ app.use(cors({
         }
 
         if (allowedOrigins.has(origin)) {
+            return callback(null, true);
+        }
+
+        if (allowedOriginPatterns.some((pattern) => pattern.test(origin))) {
             return callback(null, true);
         }
 
