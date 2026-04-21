@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ShoppingCart, Eye, Heart } from "lucide-react";
 import { ProductCategory, Products } from "../api/callApi";
-import { UPLOADS_BASE_URL } from "../api/AxiosApi";
+import { API_BASE_URL, UPLOADS_BASE_URL } from "../api/AxiosApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import SideFilter from "./SideFilter";
 import Loader from "../components/Loader";
@@ -41,7 +41,7 @@ export default function ProductList() {
       } catch (error) {
         const message =
           error.code === "ERR_NETWORK"
-            ? "Cannot connect to the backend server. Start the backend on http://localhost:2425 and refresh this page."
+            ? `Cannot connect to the backend server at ${API_BASE_URL}. Check that the backend is running and that VITE_API_URL is correct.`
             : error.response?.data?.message || "Unable to load products right now.";
 
         console.error("Fetch products failed:", error.message);
