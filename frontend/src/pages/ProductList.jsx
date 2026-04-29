@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ShoppingCart, Eye, Heart } from "lucide-react";
 import { ProductCategory, Products } from "../api/callApi";
-import { API_BASE_URL, UPLOADS_BASE_URL } from "../api/AxiosApi";
+import { API_BASE_URL, resolveImageUrl } from "../api/AxiosApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import SideFilter from "./SideFilter";
 import Loader from "../components/Loader";
@@ -131,7 +131,7 @@ export default function ProductList() {
                     <div className="relative h-52 bg-gray-100 overflow-hidden">
 
                       <img
-                        src={`${UPLOADS_BASE_URL}/${product.image}`}
+                        src={resolveImageUrl(product.image)}
                         className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                         alt={product.name}
                       />

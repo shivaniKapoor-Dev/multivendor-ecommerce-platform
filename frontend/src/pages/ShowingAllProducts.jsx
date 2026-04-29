@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Grid, List, ShoppingCart, Eye, Heart, SearchX } from "lucide-react";
 import { Products, searchBar } from "../api/callApi";
-import { UPLOADS_BASE_URL } from "../api/AxiosApi";
+import { resolveImageUrl } from "../api/AxiosApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useWishlist } from "../context/WishlistContext";
 import { useCart } from "../context/CartContext";
@@ -134,7 +134,7 @@ export default function ShowingAllProducts() {
                   viewMode === "grid" ? "w-full aspect-[4/5] rounded-t-xl" : "w-1/3 h-full rounded-l-2xl"
                 }`}>
                   <img 
-                    src={`${UPLOADS_BASE_URL}/${product.image}`}
+                    src={resolveImageUrl(product.image)}
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                     alt={product.name}
                   />

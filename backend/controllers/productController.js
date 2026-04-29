@@ -6,6 +6,16 @@ const Wishlist = require('../models/Wishlist');
 const RecentlyViewed = require("../models/RecentlyViewed");
 const { getPublicVendorIds } = require("../utils/vendorVisibility");
 
+const getStoredImageValue = (file) => {
+  if (!file) return undefined;
+
+  if (file.buffer) {
+    return `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
+  }
+
+  return file.filename;
+};
+
 const updateAverageRating = (reviews = []) => {
   if (!reviews.length) return 0;
 
@@ -63,7 +73,7 @@ exports.createProduct = async (req, res) => {
       limitedTimeDeal,
       tags,
       sizes,
-      image: req.file?.filename,
+      image: getStoredImageValue(req.file),
       vendor: vendor._id,
     });
 
@@ -134,7 +144,7 @@ exports.updateProduct = async (req, res) => {
     };
 
     if (req.file) {
-      updateData.image = req.file.filename;
+      updateData.image = getStoredImageValue(req.file);
     }
 
     const vendor = await Vendor.findOne({ userId: req.user.id });

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { createOrder, viewCart, createPayment, verifyPayment } from '../api/callApi';
-import { UPLOADS_BASE_URL } from '../api/AxiosApi';
+import { createOrder, viewCart } from '../api/callApi';
+import { resolveImageUrl } from '../api/AxiosApi';
 import { useAuth } from '../hooks/useAuth';
 
 const initialForm = {
@@ -13,12 +13,7 @@ const initialForm = {
   city: '',
   state: '',
   postalCode: '',
-  landmark: '',
-  upiId: '',
-  cardName: '',
-  cardNumber: '',
-  expiry: '',
-  cvv: ''
+  landmark: ''
 };
 
 export default function Checkout() {
@@ -26,7 +21,7 @@ export default function Checkout() {
   const { isLoggedIn } = useAuth();
 
   const [cartItems, setCartItems] = useState([]);
-  const [paymentMethod, setPaymentMethod] = useState('upi');
+  const [paymentMethod] = useState('Cash on Delivery');
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState(initialForm);
@@ -92,23 +87,9 @@ useEffect(() => {
     form.state &&
     form.postalCode;
 
-  const isPaymentValid =
-    paymentMethod === 'cod' ||
-    (paymentMethod === 'upi' && form.upiId) ||
-    (paymentMethod === 'card' &&
-      form.cardName &&
-      form.cardNumber &&
-      form.expiry &&
-      form.cvv);
+  const canPlaceOrder = isLoggedIn && cartItems.length > 0 && isAddressValid;
 
-  const canPlaceOrder = isLoggedIn && cartItems.length > 0 && isAddressValid && isPaymentValid;
-
-  const paymentLabel =
-    paymentMethod === 'cod'
-      ? 'Cash on Delivery'
-      : paymentMethod === 'upi'
-      ? 'UPI'
-      : 'Card';
+  const paymentLabel = paymentMethod;
 
   const handlePlaceOrder = async () => {
   if (!canPlaceOrder) return;
@@ -125,69 +106,13 @@ useEffect(() => {
   };
 
   try {
-    if (paymentMethod === 'cod') {
-      await createOrder({
-        address,
-        paymentMethod: 'Cash on Delivery'
-      });
-      setOrderPlaced(true);
-      return;
-    }
-
-    const { data } = await createPayment();
-
-    if (!data?.order) {
-      alert("Payment init failed");
-      return;
-    }
-
-    if (!window.Razorpay) {
-      alert("Razorpay SDK not loaded");
-      return;
-    }
-
-    const options = {
-      key: data.key,
-      amount: data.order.amount,
-      currency: "INR",
-      name: "My Store",
-      order_id: data.order.id,
-      description: `Order payment for Rs. ${data.totals?.totalAmount ?? totalAmount}`,
-
-      handler: async function (response) {
-        try {
-          await verifyPayment({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-            address,
-            paymentMethod: paymentLabel
-          });
-
-          setOrderPlaced(true);
-
-        } catch (err) {
-          alert(err.response?.data?.message || "Payment verification failed");
-        }
-      },
-      modal: {
-        ondismiss: function () {
-          alert("Payment popup closed before completing the payment");
-        }
-      },
-
-      prefill: {
-        name: form.fullName,
-        email: form.email,
-        contact: form.phone
-      }
-    };
-
-    const rzp = new window.Razorpay(options);
-    rzp.open();
-
+    await createOrder({
+      address,
+      paymentMethod
+    });
+    setOrderPlaced(true);
   } catch (error) {
-    alert(error.response?.data?.message || "Unable to start payment");
+    alert(error.response?.data?.message || "Unable to place order");
     console.log(error.response?.data || error.message);
   }
 };  if (orderPlaced) {
@@ -269,60 +194,10 @@ useEffect(() => {
 
             <div className="bg-white rounded-[2rem] border border-stone-200 shadow-sm p-8">
               <h2 className="text-xl font-bold mb-6 uppercase tracking-tight">Payment Method</h2>
-              <div className="grid sm:grid-cols-3 gap-4 mb-6">
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod('upi')}
-                  className={`rounded-2xl border px-4 py-4 text-left ${paymentMethod === 'upi' ? 'border-black bg-stone-100' : 'border-stone-200'}`}
-                >
-                  <p className="font-semibold">UPI</p>
-                  <p className="text-sm text-stone-500">Google Pay, PhonePe, Paytm</p>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod('card')}
-                  className={`rounded-2xl border px-4 py-4 text-left ${paymentMethod === 'card' ? 'border-black bg-stone-100' : 'border-stone-200'}`}
-                >
-                  <p className="font-semibold">Card</p>
-                  <p className="text-sm text-stone-500">Debit or credit card</p>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod('cod')}
-                  className={`rounded-2xl border px-4 py-4 text-left ${paymentMethod === 'cod' ? 'border-black bg-stone-100' : 'border-stone-200'}`}
-                >
-                  <p className="font-semibold">Cash on Delivery</p>
-                  <p className="text-sm text-stone-500">Pay when it arrives</p>
-                </button>
+              <div className="rounded-[1.5rem] bg-stone-50 p-5 border border-stone-200">
+                <p className="font-semibold">{paymentLabel}</p>
+                <p className="text-sm text-stone-500 mt-1">Pay when the order arrives.</p>
               </div>
-
-              {paymentMethod === 'upi' && (
-                <div className="rounded-[1.5rem] bg-stone-50 p-5 border border-stone-200">
-                  <label className="block text-sm font-semibold mb-3">UPI ID</label>
-                  <input
-                    name="upiId"
-                    value={form.upiId}
-                    onChange={handleChange}
-                    placeholder="example@oksbi"
-                    className="w-full rounded-2xl border border-stone-200 px-4 py-4 outline-none focus:border-black"
-                  />
-                </div>
-              )}
-
-              {paymentMethod === 'card' && (
-                <div className="grid md:grid-cols-2 gap-4 rounded-[1.5rem] bg-stone-50 p-5 border border-stone-200">
-                  <input name="cardName" value={form.cardName} onChange={handleChange} placeholder="Name on Card" className="rounded-2xl border border-stone-200 px-4 py-4 outline-none focus:border-black md:col-span-2" />
-                  <input name="cardNumber" value={form.cardNumber} onChange={handleChange} placeholder="Card Number" className="rounded-2xl border border-stone-200 px-4 py-4 outline-none focus:border-black md:col-span-2" />
-                  <input name="expiry" value={form.expiry} onChange={handleChange} placeholder="MM/YY" className="rounded-2xl border border-stone-200 px-4 py-4 outline-none focus:border-black" />
-                  <input name="cvv" value={form.cvv} onChange={handleChange} placeholder="CVV" className="rounded-2xl border border-stone-200 px-4 py-4 outline-none focus:border-black" />
-                </div>
-              )}
-
-              {paymentMethod === 'cod' && (
-                <div className="rounded-[1.5rem] bg-stone-50 p-5 border border-stone-200 text-sm text-stone-600">
-                  Cash on delivery is available for this demo checkout flow.
-                </div>
-              )}
             </div>
           </section>
 
@@ -336,7 +211,7 @@ useEffect(() => {
                 cartItems.map((item) => (
                   <div key={item._id} className="flex items-center gap-4">
                     <img
-                      src={`${UPLOADS_BASE_URL}/${item.productId?.image}`}
+                      src={resolveImageUrl(item.productId?.image)}
                       alt={item.productId?.name}
                       className="w-16 h-20 rounded-2xl bg-white/10 object-cover"
                     />

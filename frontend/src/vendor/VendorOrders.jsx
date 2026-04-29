@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getVendorOrders } from "../api/callApi";
-import { UPLOADS_BASE_URL } from "../api/AxiosApi";
+import { resolveImageUrl } from "../api/AxiosApi";
 
 const STATUS_STYLE = {
   placed: "bg-blue-100 text-blue-700",
@@ -70,7 +70,7 @@ export default function VendorOrders() {
                 {order.items.map((item, index) => (
                   <div key={`${order._id}-${index}`} className="flex items-center gap-4 border rounded-xl p-4">
                     <img
-                      src={`${UPLOADS_BASE_URL}/${item.productId?.image}`}
+                      src={resolveImageUrl(item.productId?.image)}
                       alt={item.productId?.name}
                       className="w-14 h-16 rounded-lg object-cover bg-gray-50"
                     />

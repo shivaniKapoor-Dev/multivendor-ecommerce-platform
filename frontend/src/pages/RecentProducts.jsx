@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { History, ShoppingCart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { recentProducts, getProduct } from '../api/callApi';
-import { UPLOADS_BASE_URL } from '../api/AxiosApi';
+import { resolveImageUrl } from '../api/AxiosApi';
 import { useAuth } from '../hooks/useAuth';
 
 export default function RecentProducts() {
@@ -139,7 +139,7 @@ export default function RecentProducts() {
               <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 mb-3 transition-all group-hover:shadow-md">
                 <Link to={`/productDetail/${product._id}`}>
                   <img
-                    src={`${UPLOADS_BASE_URL}/${product?.image}`}
+                    src={resolveImageUrl(product?.image)}
                     alt={product?.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />

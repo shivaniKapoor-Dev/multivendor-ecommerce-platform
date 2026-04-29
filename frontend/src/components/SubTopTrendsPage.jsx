@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ShoppingCart, Heart, ArrowLeft } from "lucide-react";
 import { ProductCategory } from "../api/callApi";
-import { UPLOADS_BASE_URL } from "../api/AxiosApi";
+import { resolveImageUrl } from "../api/AxiosApi";
 import Loader from "./Loader";
 import { useWishlist } from "../context/WishlistContext";
 import { useCart } from "../context/CartContext";
@@ -107,7 +107,7 @@ export default function SubTopTrendsPage() {
                 onClick={() => navigate(`/productDetail/${product._id}`)}
               >
                 <img
-                  src={`${UPLOADS_BASE_URL}/${product.image}`}
+                  src={resolveImageUrl(product.image)}
                   alt={product.name}
                   loading="lazy"
                   decoding="async"

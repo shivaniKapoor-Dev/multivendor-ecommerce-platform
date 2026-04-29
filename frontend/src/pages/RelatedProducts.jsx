@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { relatedProducts } from '../api/callApi';
-import { UPLOADS_BASE_URL } from '../api/AxiosApi';
+import { resolveImageUrl } from '../api/AxiosApi';
 import { Link } from 'react-router-dom'; 
 import { ShoppingCart, Heart, ArrowRight, Check,Eye, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -79,7 +79,7 @@ export default function RelatedProducts({ category }) {
                                 
                                 <Link to={`/productDetail/${item._id}`} className="block w-full h-full">
                                     <img 
-                                        src={`${UPLOADS_BASE_URL}/${item.image}`} 
+                                        src={resolveImageUrl(item.image)} 
                                         alt={item.name} 
                                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                                     />

@@ -218,10 +218,3 @@ export const updateOrderStatus = async(id, data)=>{
 export const getAdminSummary = async()=>{
     return Axios.get('/admin/summary');
 }
-
-export const createPayment = async(data = {})=>{
-    return Axios.post('/create_payment',data);
-}
-export const verifyPayment = async(data)=>{
-    return Axios.post('/verify_payment',data);
-}

@@ -50,7 +50,6 @@ app.use('/api', require('./routes/cartRoutes'));
 app.use('/api', require('./routes/searchRoutes'));
 app.use('/api', require('./routes/orderRoutes'));
 app.use('/api', require('./routes/adminRoutes'));
-app.use('/api', require('./routes/paymentRoutes'));
 
 const PORT = process.env.PORT || 2425;
 app.listen(PORT, () => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 import { getOrders, requestCancelOrder } from '../api/callApi';
-import { UPLOADS_BASE_URL } from '../api/AxiosApi';
+import { resolveImageUrl } from '../api/AxiosApi';
 import { useAuth } from '../hooks/useAuth';
 
 const ORDER_STATUS_STYLES = {
@@ -132,7 +132,7 @@ export default function OrdersReturns() {
                       {order.items.map((item, index) => (
                         <div key={`${order._id}-${index}`} className="flex items-center gap-4 border border-slate-100 rounded-2xl p-4">
                           <img
-                            src={`${UPLOADS_BASE_URL}/${item.productId?.image}`}
+                            src={resolveImageUrl(item.productId?.image)}
                             alt={item.productId?.name}
                             className="w-16 h-20 rounded-2xl bg-slate-50 object-cover"
                           />
