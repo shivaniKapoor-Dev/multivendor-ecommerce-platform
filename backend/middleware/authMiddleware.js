@@ -17,8 +17,8 @@ exports.protectMiddleware = async(req, res, next)=>{
 exports.isAdmin = async(req, res, next)=>{
  try{
   const role = req.user.role
-  if(role === "admin"){
-res.status(400).json({message:"Access Denied only admin can access"})
+  if(role !== "admin"){
+return res.status(403).json({message:"Access Denied only admin can access"})
   }
   next();
   }catch(error){
@@ -30,8 +30,8 @@ res.status(400).json({message:"Access Denied only admin can access"})
 exports.isVendor = async(req, res, next)=>{
  try{
   const role = req.user.role
-  if(role === "vendor"){
-res.status(400).json({message:"Access Denied only vendor can access"})
+  if(role !== "vendor"){
+return res.status(403).json({message:"Access Denied only vendor can access"})
   }
   next();
   }catch(error){

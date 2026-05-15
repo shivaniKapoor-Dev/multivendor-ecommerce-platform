@@ -128,10 +128,11 @@ exports.loginUser = async(req, res)=> {
             delete userResponse.password;
 
             const token = generateToken(user);
+            const isProduction = process.env.NODE_ENV === "production";
             res.cookie("token", token,{
               httpOnly: true,
-              secure: false,
-              sameSite: 'lax',
+              secure: isProduction,
+              sameSite: isProduction ? 'none' : 'lax',
               maxAge: 24 * 60 *60 *1000
             })
          return   res.json({message: "Login sucessfully",
@@ -145,7 +146,12 @@ exports.loginUser = async(req, res)=> {
 
 //logout
 exports.logout = async(req, res)=>{
-  res.clearCookie("token");
+  const isProduction = process.env.NODE_ENV === "production";
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+  });
   res.status(200).json({ message: "Logged out" });
 }
 

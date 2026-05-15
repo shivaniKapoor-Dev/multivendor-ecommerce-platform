@@ -231,7 +231,7 @@ export default function Cart() {
                             </button>
 
                             <p className="text-[10px] text-gray-400 text-center mt-4 uppercase tracking-tighter">
-                                Secure Payment Powered by Stripe
+                                Cash on Delivery Available
                             </p>
                         </div>
                     </div>

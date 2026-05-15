@@ -1,6 +1,6 @@
 const express = require('express');
 const { createProduct, productPage, updateProduct, viewProducts, deleteProduct, AllProducts, getProduct, relatedProducts, wishlist, getWishlist, deleteWishlist, trackVisit, getRecentProducts, productWishlist, getGuestRecentProducts, updateProductBlock, adminProducts, addProductReview} = require('../controllers/productController');
-const { protectMiddleware } = require('../middleware/authMiddleware');
+const { protectMiddleware, isAdmin } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
 const router = express.Router();
@@ -10,8 +10,8 @@ router.post('/createProduct',protectMiddleware, upload.single("image") ,createPr
 router.get('/productPage',protectMiddleware ,productPage)
 router.put('/updateProduct/:id',protectMiddleware, upload.single("image"), updateProduct)
 router.delete('/deleteProduct/:id',protectMiddleware, deleteProduct)
-router.get('/admin/productsList', protectMiddleware, adminProducts)
-router.put('/admin/productStatus/:id', protectMiddleware, updateProductBlock)
+router.get('/admin/productsList', protectMiddleware, isAdmin, adminProducts)
+router.put('/admin/productStatus/:id', protectMiddleware, isAdmin, updateProductBlock)
 
 //user
 router.get('/products/:category' ,viewProducts)
