@@ -75,11 +75,6 @@ export default function Footer() {
             Email: shivanikapoor5588@gmail.com
           </p>
 
-          <div className="flex gap-3 mt-5">
-            <img src="/paypal.png" className="h-6" />
-            <img src="/visa.png" className="h-6" />
-            <img src="/mastercard.png" className="h-6" />
-          </div>
         </div>
 
       </div>
