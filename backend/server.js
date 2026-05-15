@@ -10,7 +10,6 @@ dotenv.config();
 const allowedOrigins = new Set([
     "http://localhost:5173",
     "https://multivendor-ecommerce-platform.vercel.app",
-    "https://multivendor-ecommerce-platform.onrender.com",
 ]);
 
 const allowedOriginPatterns = [
